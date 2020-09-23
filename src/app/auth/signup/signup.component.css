@@ -1,0 +1,30 @@
+/* #container{
+    display:flex;
+    flex-direction: column;
+    height: 25%;
+    justify-content: center;
+    align-items: center;
+}
+.child{
+    flex:1;
+    height: 50px;
+}
+
+#child1{
+    background-color: blue;
+    flex: 4;
+}
+
+#child2{
+    background-color: red;
+}
+
+
+#child3{
+    background-color: green;
+} */
+
+
+mat-form-field{
+    width: 300px;
+}
