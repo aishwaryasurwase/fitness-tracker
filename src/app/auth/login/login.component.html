@@ -11,7 +11,7 @@
                 #pwdInput="ngModel">
             <mat-error>Has to be at least 6 characters</mat-error>
         </mat-form-field>
-        <button type="submit" mat-raised-button color="primary" *ngIf="!isLoading">Login</button>
-        <mat-spinner *ngIf="isLoading"></mat-spinner>
+        <button type="submit" mat-raised-button color="primary" *ngIf="!(isLoading$ | async)">Login</button>
+        <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
     </form>
 </div>

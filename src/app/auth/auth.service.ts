@@ -8,7 +8,11 @@ import { TrainingService } from '../training/training.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UiService } from '../shared/ui.service';
 // import * as frmApp from '../app.reducer';
-// import { Store } from '@ngrx/store';
+import * as fromRoot from '../app.reducer';
+import * as UI from "../shared/ui.action";
+import * as Auth from "./auth.action";
+
+import { Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
@@ -16,24 +20,28 @@ import { UiService } from '../shared/ui.service';
 export class AuthService {
   private user: User;
   authUpdate = new Subject<boolean>();
-  isAuthenticated = false;
+  // isAuthenticated = false;
+  isAuthenticated;
 
   constructor(private router: Router, private afauth: AngularFireAuth,
     private traningService: TrainingService, private snackbar: MatSnackBar, private uiService: UiService,
     // private store: Store<{ ui: frmApp.State }>
-    ) { }
+    private store: Store<fromRoot.State>
+  ) { }
 
   initAuthListener() {
     this.afauth.authState.subscribe(user => {
       if (user) {
-        this.isAuthenticated = true;
-        this.authUpdate.next(true);
+        // this.isAuthenticated = true;
+        // this.authUpdate.next(true);
+        this.store.dispatch(new Auth.AuthorizedUser());
         this.router.navigate(['/training']);
       } else {
         this.traningService.cancelSubscription();
-        this.authUpdate.next(false);
         this.router.navigate(['/login']);
-        this.isAuthenticated = false;
+        // this.authUpdate.next(false);
+        // this.isAuthenticated = false;
+        this.store.dispatch(new Auth.UnauthorizedUser());
       }
     })
   }
@@ -58,19 +66,22 @@ export class AuthService {
   }
 
   login(auth: AuthData) {
-    this.uiService.loadingChanged.next(true);
+    // this.uiService.loadingChanged.next(true);
     // this.store.dispatch({type: 'START_LOADING'});
-    
+    this.store.dispatch(new UI.StartLoading());
+
     this.afauth.signInWithEmailAndPassword(auth.email, auth.password).then((success) => {
       console.log("login success", success);
-      this.uiService.loadingChanged.next(false);
+      // this.uiService.loadingChanged.next(false);
       // this.store.dispatch({type: 'STOP_LOADING'});
+      this.store.dispatch(new UI.StopLoading());
 
     }).catch((err) => {
       // console.log("error", err.message);
       // this.store.dispatch({type: "STOP_LOADING"});
+      this.store.dispatch(new UI.StopLoading());
 
-      this.uiService.loadingChanged.next(false);
+      // this.uiService.loadingChanged.next(false);
       this.snackbar.open(err.message, null, {
         duration: 3000
       })
@@ -78,11 +89,12 @@ export class AuthService {
     })
   }
 
-  isAuth() {
-    return this.isAuthenticated;
-  }
+  // isAuth() {
+  //   return this.isAuthenticated;
+  // }
 
   logout() {
     this.afauth.signOut();
+    this.router.navigate(['/login']);
   }
 }

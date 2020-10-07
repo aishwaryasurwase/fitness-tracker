@@ -4,9 +4,9 @@ import { UiService } from 'src/app/shared/ui.service';
 import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs/Subscription';
 // import * as frmApp from '../../app.reducer';
-// import { Store } from '@ngrx/store';
-// import { map } from 'rxjs/operators';
-// import { Observable } from 'rxjs';
+import * as frmRoot from '../../app.reducer';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,23 +14,25 @@ import { Subscription } from 'rxjs/Subscription';
 })
 
 export class LoginComponent implements OnInit, OnDestroy {
-  // isLoading$;
-  isLoading;
+  isLoading$;
+  // isLoading;
   loadingSubscription = new Subscription();
   constructor(private authService: AuthService, private uiService: UiService,
     //  private store: Store<{ ui: frmApp.State }>
+    private store: Store<frmRoot.State>
   ) { }
 
   ngOnInit(): void {
-    // // this.isLoading$ = this.store.map(state => state.ui.isLoading)
+    this.isLoading$ = this.store.select(frmRoot.getIsLoading);
+    // this.isLoading$ = this.store.map(state => state.ui.isLoading)
     // this.store.subscribe(data => {
-    //   // console.log("Store data ", data.ui.isLoading);
+    //   console.log("Store data ", data.ui.isLoading);
     //   this.isLoading$ = data.ui.isLoading;
     // })
 
-    this.loadingSubscription = this.uiService.loadingChanged.subscribe(loadingStatus => {
-      this.isLoading = loadingStatus;
-    })
+    // this.loadingSubscription = this.uiService.loadingChanged.subscribe(loadingStatus => {
+    //   this.isLoading = loadingStatus;
+    // })
   }
 
   onLogin(form: NgForm) {

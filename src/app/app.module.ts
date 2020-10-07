@@ -23,8 +23,9 @@ import { AuthModule } from './auth/auth.module';
 import { TrainingModule } from './training/training.module';
 import { SharedModule } from './shared/shared.module';
 
-// import { StoreModule } from '@ngrx/store';
-// import { appReducer } from './app.reducer';
+import { StoreModule } from '@ngrx/store';
+import { reducer } from './app.reducer';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +46,7 @@ import { SharedModule } from './shared/shared.module';
     TrainingModule,
     SharedModule,
     FlexLayoutModule,
+    StoreModule.forRoot(reducer)
     // StoreModule.forRoot({ui: appReducer})
   ],
   providers: [TrainingService],
