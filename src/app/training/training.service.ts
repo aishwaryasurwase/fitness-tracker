@@ -35,10 +35,7 @@ export class TrainingService {
         this.uiService.loadingChanged.next(true);
         this.fbSubscription.push(this.db.collection('AvailableExercises').snapshotChanges().pipe(
             map(docArray => {
-                // console.log("doarray", docArray);
-                // throw new Error();1
                 return docArray.map((docData: any) => {
-                    // console.log("Doc ", docData.payload.doc.data().name);
                     return {
                         id: docData.payload.doc.id,
                         name: docData.payload.doc.data().name,
@@ -74,8 +71,9 @@ export class TrainingService {
         this.addDataToDatabase({
             ...this.runningExercise,
             duration: this.runningExercise.duration * (progress / 100),
-            calories: this.runningExercise.duration * (progress / 100),
-            date: new Date, status: 'Cancelled'
+            calories: this.runningExercise.calories * (progress / 100),
+            date: new Date(),
+            status: 'Cancelled'
         })
         this.runningExercise = null;
         this.exerciseChanged.next(null);
@@ -86,10 +84,7 @@ export class TrainingService {
     }
 
     fetchCompletedOrCancelledExercise() {
-        // return this.finishedExercises.slice();
         this.fbSubscription.push(this.db.collection('finishedExercise').valueChanges().subscribe(exercise => {
-            console.log("result ", exercise);
-            // this.finishedExercises = exercise;
             this.finishedExercise.next(exercise);
         }))
     }

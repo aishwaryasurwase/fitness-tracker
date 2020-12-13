@@ -38,7 +38,7 @@ export class AuthService {
         this.router.navigate(['/training']);
       } else {
         this.traningService.cancelSubscription();
-        this.router.navigate(['/login']);
+        // this.router.navigate(['/login']);
         // this.authUpdate.next(false);
         // this.isAuthenticated = false;
         this.store.dispatch(new Auth.UnauthorizedUser());

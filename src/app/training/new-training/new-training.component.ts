@@ -2,9 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TrainingService } from '../training.service';
 import { Exercise } from '../exercise.model';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { analytics } from 'firebase';
+import { Subscription } from 'rxjs';
 import { UiService } from 'src/app/shared/ui.service';
 
 @Component({
@@ -13,7 +11,6 @@ import { UiService } from 'src/app/shared/ui.service';
   styleUrls: ['./new-training.component.css']
 })
 export class NewTrainingComponent implements OnInit, OnDestroy {
-  // @Output() startTrainingEvt = new EventEmitter();
   exercises: any;
   fetchExerciseSubscription = new Subscription();
   isLoading = false;
@@ -38,13 +35,8 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   }
 
   onNewTraining(form) {
-    console.log("form ", form.value.exercise);
     this.trainingService.startExercise(form.value.exercise);
   }
-
-  // selectedExercise(event) {
-  //   console.log("Selected exercise id ", event);
-  // }
 
   ngOnDestroy() {
     if (this.fetchExerciseSubscription) {

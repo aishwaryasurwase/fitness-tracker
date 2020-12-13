@@ -12,7 +12,7 @@ import { TrainingService } from '../training.service';
   styleUrls: ['./past-training.component.css']
 })
 export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayColumns = ['name', 'duration', 'status', 'calories']
+  displayColumns = ['date', 'name', 'duration', 'status', 'calories']
   dataSource = new MatTableDataSource<Exercise>();
   constructor(private trainingService: TrainingService) { }
   @ViewChild(MatSort) sort: MatSort;
@@ -20,7 +20,6 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   finishExerciseSubscription = new Subscription();
   ngOnInit(): void {
-    // this.dataSource.data = this.trainingService.getCompletedOrCancelledExercise();
     this.finishExerciseSubscription = this.trainingService.finishedExercise.subscribe((finishExercise: Exercise[]) => {
       this.dataSource.data = finishExercise
     })
